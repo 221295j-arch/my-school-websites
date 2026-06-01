@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            body{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 50px;
+                background-color: bisque;
+                line-height: 1.6;
+            }
+
+            select, input{
+                width: 250px;
+                padding: 8px;
+                font-size: medium;      
+                background-color: azure;
+                border-radius: 40px;   
+                border-color: black;
+                text-align: center;     
+            }
+
+            button {
+                font-size: small;
+                background-color: cornflowerblue;
+                padding: 6px;
+                border-radius: 20px;
+                border-color: black;
+            }
+            #squareWorking, #circleWorking, #hexagonWorking {
+                width: 600px;
+                margin-top: 20px;
+            }
+
+            #containerShapes {
+                height: 200px;
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+                width: auto;
+            }
+        </style>
+        <title>Confectionery Container Optimisation</title></head>
+    <body>
+        <h1>Confectionery Container Optimisation</h1>
+
+        <p>According to the United Nation's 17 Sustainable Development Goals, in order to fight climate change and environmental damage, society must "ensure sustainable production and consumption patterns." This extends to all parts of life, manifesting in the 3 "R"s - reduce, reuse and recycle. It is imperative for everyone to minimise our negative environmental footprint. </p>
+        <p> With this in mind, as well as growing inflation, a chocolatier wishes to minimise the cost of pushing out his products - chocolate sweets. The chocolatier wants to use the least amount of material to package his sweets (with each having a volume of 3cm^3). There are 3 container shapes available - all prisms, with different shaped bases. Check out the optimal dimensions of each type of container (for a given number of sweets) and the mathematical reasoning behind them! </p>
+       
+        <div id="containerShapes">
+            <img src = "hexagonalPrism.png" alt = "Hexagonal Prism"> 
+            <img src = "squarePrism.jpg" alt = "Square Prism, AKA Cuboid">
+            <img src = "cylinder.png" alt = "Circular Prism, AKA Cylinder">
+        </div>
+        
+
+        <!-- Creating a dropdown box for one to select the style of box --> 
+        <label>Shape of Container Base</label>
+        <select id="shape">
+            <option value=""> Select a Base Shape </option>
+            <option value="square"> Square </option>
+            <option value="circle"> Circle </option>
+            <option value="hexagon"> Hexagon </option>
+        </select>
+
+        <p></p>
+
+        <!-- Creating a text input for one to insert the number of sweets - where each sweet is 3cm^2 -->
+        <Label>Number of Sweets</Label>
+        <input type="number" id="number" placeholder="e.g. 50 - insert only numbers!">
+        
+        <p></p>
+
+        <!-- Creating a button to run the caulculation, depending on the choice of shape -->
+        <button onclick="calculate()">Calculate</button>
+
+        <p></p>
+
+        <!-- Creating paragraphs to show the optimal dimensions and corresponding surface area of the container, given volume V = 3 * number of sweets -->
+        <p id="output"></p>
+
+        <!-- Buttons that show working for circle, hexagon and square -->
+         <div id = "buttons"> 
+            <button onclick="showWorking('square')">Square Working</button>
+            <button onclick="showWorking('circle')">Circle Working</button>     
+            <button onclick="showWorking('hexagon')">Hexagon Working</button>      
+         </div>
+
+         <img id = "squareWorking" src="squareWorking.png" style="display: none;">
+         <img id = "circleWorking" src="circleWorking.png" style="display: none;">
+         <img id = "hexagonWorking" src="hexagonWorking.png" style="display: none;">
+
+         <h2>Annex</h2>
+
+         <p>
+            Resources used: Claude AI, VS Code <br><br>
+            Citations and AI declaration: <br>
+            Byjus.com (n.d.). <i>What is Hexagonal Prism?</i>. Retrieved from https://byjus.com/maths/hexagonal-prism/ <br>
+            Math Principles (2014, August 7). <i>Square Prism Problems</i>. Retrieved from https://www.math-principles.com/2014/08/square-prism-problems.html <br>
+            Story of Mathematics (n.d.). <i>What Is a Cylinder?</i>. Retrieved from https://www.storyofmathematics.com/glossary/cylinder/ <br>
+            United Nations (n.d.). <i>The 17 Goals</i>. Retrieved from https://sdgs.un.org/goals <br>
+            W3Schools (n.d.). <i>CSS object-fit Property</i>. Retrieved from https://www.w3schools.com/css/css3_object-fit.asp <br>
+            W3Schools (n.d.). <i>HTML Images</i>. Retrieved from https://www.w3schools.com/Html/html_images.asp <br><br>
+            Claude AI was used to code and debug JavaScript code and CSS quickly - after a lot of confusion, and trial and error, because Yian does not know how to code. <br>
+            Please copy this link for the list of prompts and answers: https://docs.google.com/document/d/1SViFg6eSMwjkQxPqMPDbvPB_zXIxd7X0AByhgxJqlQ8/edit?tab=t.0 <br><br>
+            Mathematical derivations are completely original. <br>
+            Group members: Hou Yian, Kevin Tan, Jayden Chong.
+         </p>
+
+        <script>
+            const π = Math.PI;
+
+            function solveCircle(V) {
+                const r = Math.pow(V/(2*π), 1/3);
+                const h = V/(π*r*r);
+                const SA = 2*π*r*h + 2*π*r*r;
+                return {r, h, SA}
+            }
+
+            function solveSquare(V) {
+                const r = Math.pow(V, 1/3);
+                const h = V/(r*r);
+                const SA = 2*r*r + 4*r*h;
+                return {r, h, SA}
+            }
+
+            function solveHexagon(V) {
+                const r = Math.pow(2*V/9, 1/3);
+                const h = 2*V/(r*r*3*Math.sqrt(3));
+                const SA = r*r*3*Math.sqrt(3) + 4*V/(r*Math.sqrt(3));
+                return {r, h, SA}
+            }
+
+            function showWorking(shape) {
+                document.getElementById("squareWorking").style.display = "none";
+                document.getElementById("circleWorking").style.display = "none";
+                document.getElementById("hexagonWorking").style.display = "none";
+                document.getElementById(shape + "Working").style.display = "block";
+            }
+
+            function calculate(){
+                const V = parseFloat(3*(document.getElementById("number").value));
+                const shape = document.getElementById("shape").value;
+
+                let result;
+                if (shape === "circle"){
+                     result = solveCircle(V);
+                }
+                else if (shape === "square"){
+                     result = solveSquare(V);
+                }
+                else if (shape === "hexagon"){
+                     result = solveHexagon(V);
+                }
+
+                document.getElementById("output").innerHTML = 
+                "Length = " + result.r.toPrecision(3) + " cm<br>" + 
+                "Height = " + result.h.toPrecision(3) + " cm<br>" +
+                "Giving a minimum surface area of " + result.SA.toPrecision(3) + " square cm<br>" +
+                "Ratio of r/h = " + (result.r/result.h).toPrecision(3) + "; notice how this always stays constant for all values of V, as the shapes are similar<br>" + 
+                "Note: the length of cylinder refers to the circle's radius; that of a hexagonal prism is the length of one of its 6 sides on the hexagonal surface."
+            }
+
+
+
+        </script>
+    </body>
+</html>
